@@ -7,9 +7,44 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <DatePicker Height="34" HorizontalAlignment="Left" Margin="283,108,0,0" Name="dateToSubmit"   
-        VerticalAlignment="Top" Width="267" SelectedDate="{Binding DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-        />
-        <Button x:Name="submitBtn" Width="100" Height="30" Content="Submit" Margin="0,0,0,0"  Command="{Binding SubmitDateOfBirthCommand}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <StackPanel VerticalAlignment="Center">
+                <Label Content="Enter your name" HorizontalAlignment="Center"></Label>
+                <TextBox Height="25" Width="100"></TextBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <StackPanel VerticalAlignment="Center">
+                <Label Content="Enter your surname" HorizontalAlignment="Center" ></Label>
+                <TextBox Height="25" Width="100"></TextBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <StackPanel VerticalAlignment="Center">
+                <Label Content="Enter your email" HorizontalAlignment="Center"></Label>
+                <TextBox Height="25" Width="100"></TextBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="2">
+            <StackPanel VerticalAlignment="Center">
+                <Label Content="Select your date of birth" HorizontalAlignment="Center" ></Label>
+                <DatePicker Height="25" Width="100"></DatePicker>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.ColumnSpan="4" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button >Submit</Button>
+        </StackPanel>
     </Grid>
 </UserControl>
