@@ -18,38 +18,86 @@ namespace Lab2Telizhenko.ViewModels
 
         public MainModel Model { get; private set; }
 
-        private int _age;
-        public int Age
+
+        #region LABELS
+        private string _nameLabel;
+        public string NameLabel
         {
-            get => _age;
+            get => _nameLabel;
             set
             {
-                _age = value;
-                OnPropertyChanged(nameof(Age));
+                _nameLabel = value;
+                OnPropertyChanged(nameof(NameLabel));
             }
         }
 
-        private string _chZodiac;
-        public string ChineeseZodiac
+        private string _surnameLabel;
+        public string SurnameLabel
         {
-            get => _chZodiac;
+            get => _surnameLabel;
             set
             {
-                _chZodiac = value;
-                OnPropertyChanged(nameof(ChineeseZodiac));
+                _surnameLabel = value;
+                OnPropertyChanged(nameof(SurnameLabel));
             }
         }
 
-        private string _wZodiac;
-        public string WestZodiac
+        private string _emailLabel;
+        public string EmailLabel
         {
-            get => _wZodiac;
+            get => _emailLabel;
             set
             {
-                _wZodiac = value;
-                OnPropertyChanged(nameof(WestZodiac));
+                _emailLabel = value;
+                OnPropertyChanged(nameof(EmailLabel));
             }
         }
+
+        private string _birthDateLabel;
+        public string BirthDateLabel
+        {
+            get => _birthDateLabel;
+            set
+            {
+                _birthDateLabel = value;
+                OnPropertyChanged(nameof(BirthDateLabel));
+            }
+        }
+
+        private string _isAdultLabel;
+        public string IsAdultLabel
+        {
+            get => _isAdultLabel;
+            set
+            {
+                _isAdultLabel = value;
+                OnPropertyChanged(nameof(IsAdultLabel));
+            }
+        }
+
+        private string _chZodiacLabel;
+        public string ChineeseZodiacLabel
+        {
+            get => _chZodiacLabel;
+            set
+            {
+                _chZodiacLabel = value;
+                OnPropertyChanged(nameof(ChineeseZodiacLabel));
+            }
+        }
+
+        private string _wZodiacLabel;
+        public string WestZodiacLabel
+        {
+            get => _wZodiacLabel;
+            set
+            {
+                _wZodiacLabel = value;
+                OnPropertyChanged(nameof(WestZodiacLabel));
+            }
+        }
+
+        #endregion
 
         private Visibility _congratulationsVisibility;
         public Visibility CongratulationsVisibility
@@ -64,7 +112,7 @@ namespace Lab2Telizhenko.ViewModels
         public MainViewModel(Storage storage)
         {
             Model = new MainModel(storage);
-            Model.UserDataChanged += AssignUserData;
+            Model.PersonChanged += AssignUserData;
         }
 
         private ICommand _backCommand;
@@ -85,12 +133,16 @@ namespace Lab2Telizhenko.ViewModels
             }
         }
 
-        private void AssignUserData(UserData userData)
+        private void AssignUserData(Person userData)
         {
-            Age = userData.Age;
-            ChineeseZodiac = userData.ChineeseZodiac.ToString();
-            WestZodiac = userData.WestZodiac.ToString();
-            CongratulationsVisibility = userData.HasBirthday ? Visibility.Visible : Visibility.Collapsed;
+            NameLabel = $"Person name: {userData.Name}";
+            SurnameLabel = $"Person surname: {userData.Surname}";
+            EmailLabel = $"Person email: {userData.Email}";
+            BirthDateLabel = $"Person birthdate: {userData.BirthDate.ToString("dd-MM-yyyy")}";
+            ChineeseZodiacLabel = $"Person sun sign: {userData.SunSign.ToString()}";
+            WestZodiacLabel = $"Person sun sign: {userData.WestZodiac.ToString()}";
+            IsAdultLabel = $"Person is {(userData.IsAdult ? "an" : "not an")} adult";
+            CongratulationsVisibility = userData.IsBirthday ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void OnPropertyChanged([CallerMemberName] string prop = null)

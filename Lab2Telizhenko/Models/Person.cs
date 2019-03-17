@@ -1,48 +1,73 @@
-﻿using Lab2Telizhenko.Managers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Lab2Telizhenko.Models
 {
-    public class WelcomeModel
+
+    public enum WestZodiac
     {
-        private Storage _storage;
+        Aries, Taurus, Gemini, Canser,
+        Leo, Virgo, Libra, Scorpio,
+        Sagittarius, Capricorn, Aquarius, Pisces
+    }
 
-        public WelcomeModel(Storage storage)
-        {
-            _storage = storage;
-        }
+    public enum ChineeseZodiac
+    {
+        Rat, Ox, Tiger, Rabbit,
+        Dragon, Snake, Horse, Sheep,
+        Monkey, Rooster, Dog, Pig
+    }
 
-        public void SubmitForm(DateTime dateOfBirth, string name, string surname, string email)
+    public class Person
+    {
+        public string Name { get; }
+        public string Surname { get; }
+        public string Email { get; set; }
+        public DateTime BirthDate { get; }
+        public bool IsAdult { get; }
+        public bool IsBirthday { get; }
+        public ChineeseZodiac SunSign { get; set; }
+        public WestZodiac WestZodiac { get; set; }
+
+        public Person(string name, string surname, string email, DateTime birthDate)
         {
-            var now = DateTime.Now;
-            var age = now.Year - dateOfBirth.Year;
-            if (dateOfBirth > now.AddYears(-age))
+            Name = name;
+            Surname = surname;
+            Email = email;
+            BirthDate = birthDate;
+            var age = DateTime.Now.Year - birthDate.Year;
+            if (birthDate > DateTime.Now.AddYears(-age))
                 --age;
-            if (age < 0)
-                throw new FutureBirthDateException(dateOfBirth);
-            if (age > 135)
-                throw new FarBirthDateException(dateOfBirth);
-            try
-            {
-                new System.Net.Mail.MailAddress(email);
-            }
-            catch
-            {
-                throw new InvalidEmailException(email);
-            }
-
-            var person = new Person(name, surname, email, dateOfBirth);
-
-            _storage.SetUserData(person);
-            NavigationManager.Instance.Navigate(Modes.Main);
+            IsAdult = age >= 18;
+            SunSign = CalculateChineese(birthDate);
+            WestZodiac = CalculateWest(birthDate);
+            IsBirthday = DateTime.Now.DayOfYear == birthDate.DayOfYear;
         }
 
-        private WestZodiac CalculateWest(DateTime date)
+        public Person(string name, string surname, DateTime birthDate)
+        {
+            Name = name;
+            Surname = surname;
+            BirthDate = birthDate;
+            var age = DateTime.Now.Year - birthDate.Year;
+            if (birthDate > DateTime.Now.AddYears(-age))
+                --age;
+            IsAdult = age >= 18;
+            SunSign = CalculateChineese(birthDate);
+            WestZodiac = CalculateWest(birthDate);
+        }
+
+        public Person(string name, string surname, string email)
+        {
+            Name = name;
+            Surname = surname;
+            Email = email;
+        }
+
+        private static WestZodiac CalculateWest(DateTime date)
         {
             if ((date.Month == 3 && date.Day >= 21) || (date.Month == 4 && date.Day <= 20))
                 return WestZodiac.Aries;
@@ -69,7 +94,7 @@ namespace Lab2Telizhenko.Models
             return WestZodiac.Pisces;
         }
 
-        private ChineeseZodiac CalculateChineese(DateTime date)
+        private static ChineeseZodiac CalculateChineese(DateTime date)
         {
             var descriptor = (date.Year % 12) - 4;
             if (descriptor < 0)

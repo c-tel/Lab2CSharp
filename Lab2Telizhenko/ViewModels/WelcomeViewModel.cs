@@ -3,6 +3,7 @@ using Lab2Telizhenko.Tools;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Lab2Telizhenko.ViewModels
@@ -12,7 +13,10 @@ namespace Lab2Telizhenko.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public WelcomeModel Model { get; private set; }
         private DateTime _dateOfBirth;
-        private ICommand _submitDateOfBirthCommand;
+        private string _name;
+        private string _surname;
+        private string _email;
+        private ICommand _submitFormCommand;
 
         public WelcomeViewModel(Storage storage)
         {
@@ -20,6 +24,7 @@ namespace Lab2Telizhenko.ViewModels
             DateOfBirth = DateTime.Now;
         }
 
+        #region FormData
         public DateTime DateOfBirth
         {
             get => _dateOfBirth;
@@ -30,31 +35,79 @@ namespace Lab2Telizhenko.ViewModels
             }
         }
 
-        public ICommand SubmitDateOfBirthCommand
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        public string Surname
+        {
+            get => _surname;
+            set
+            {
+                _surname = value;
+                OnPropertyChanged(nameof(Surname));
+            }
+        }
+
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+        #endregion
+
+        public ICommand SubmitFormCommand
         {
             get
             {
-                if (_submitDateOfBirthCommand == null)
+                if (_submitFormCommand == null)
                 {
-                    _submitDateOfBirthCommand = new RelayCommand<object>(SubmitDateOfBirthExecute, SubmitDateOfBirthCanExecute);
+                    _submitFormCommand = new RelayCommand<object>(SubmitFormExecute, SubmitFormCanExecute);
                 }
-                return _submitDateOfBirthCommand;
+                return _submitFormCommand;
             }
             set
             {
-                _submitDateOfBirthCommand = value;
-                OnPropertyChanged(nameof(SubmitDateOfBirthCommand));
+                _submitFormCommand = value;
+                OnPropertyChanged(nameof(SubmitFormCommand));
             }
         }
 
-        private bool SubmitDateOfBirthCanExecute(object o)
+        private bool SubmitFormCanExecute(object o)
         {
-            return true;
+            return !string.IsNullOrEmpty(Name) &&
+                !string.IsNullOrEmpty(Surname) &&
+                !string.IsNullOrEmpty(Email);
         }
 
-        private void SubmitDateOfBirthExecute(object o)
+        private void SubmitFormExecute(object o)
         {
-            Model.SubmitDateOfBirth(DateOfBirth);
+            try
+            {
+                Model.SubmitForm(DateOfBirth, Name, Surname, Email);
+            }
+            catch (FarBirthDateException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            catch (FutureBirthDateException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            catch (InvalidEmailException e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public void OnPropertyChanged([CallerMemberName] string prop = null)

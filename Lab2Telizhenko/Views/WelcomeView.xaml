@@ -22,29 +22,29 @@
         <Grid Grid.Row="1" Grid.Column="1">
             <StackPanel VerticalAlignment="Center">
                 <Label Content="Enter your name" HorizontalAlignment="Center"></Label>
-                <TextBox Height="25" Width="100"></TextBox>
+                <TextBox Height="25" Width="100" Text="{Binding Name}"></TextBox>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2">
             <StackPanel VerticalAlignment="Center">
                 <Label Content="Enter your surname" HorizontalAlignment="Center" ></Label>
-                <TextBox Height="25" Width="100"></TextBox>
+                <TextBox Height="25" Width="100" Text="{Binding Surname}"></TextBox>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <StackPanel VerticalAlignment="Center">
                 <Label Content="Enter your email" HorizontalAlignment="Center"></Label>
-                <TextBox Height="25" Width="100"></TextBox>
+                <TextBox Height="25" Width="150" Text="{Binding Email}"></TextBox>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
             <StackPanel VerticalAlignment="Center">
                 <Label Content="Select your date of birth" HorizontalAlignment="Center" ></Label>
-                <DatePicker Height="25" Width="100"></DatePicker>
+                <DatePicker Height="25" Width="100" SelectedDate="{Binding DateOfBirth}"></DatePicker>
             </StackPanel>
         </Grid>
         <StackPanel Grid.ColumnSpan="4" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button >Submit</Button>
+            <Button Command="{Binding SubmitFormCommand}">Submit</Button>
         </StackPanel>
     </Grid>
 </UserControl>

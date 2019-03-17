@@ -8,14 +8,14 @@ namespace Lab2Telizhenko.Models
 {
     public class Storage
     {
-        public event Action<UserData> UserDataChanged;
+        public event Action<Person> PersonChanged;
 
-        public UserData CurrentUserData { get; private set; }
+        public Person CurrentPerson { get; private set; }
 
-        public void SetUserData(UserData nextData)
+        public void SetUserData(Person nextPerson)
         {
-            CurrentUserData = nextData;
-            UserDataChanged?.Invoke(CurrentUserData);
+            CurrentPerson = nextPerson;
+            PersonChanged?.Invoke(CurrentPerson);
         }
 
     }

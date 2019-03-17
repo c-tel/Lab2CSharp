@@ -10,17 +10,17 @@ namespace Lab2Telizhenko.Models
     public class MainModel
     {
         private Storage _storage;
-        public event Action<UserData> UserDataChanged;
+        public event Action<Person> PersonChanged;
 
         public MainModel(Storage storage)
         {
             _storage = storage;
-            _storage.UserDataChanged += OnUserDataChanged;
+            _storage.PersonChanged += OnPersonChanged;
         }
 
-        private void OnUserDataChanged(UserData userData)
+        private void OnPersonChanged(Person person)
         {
-            UserDataChanged?.Invoke(userData);
+            PersonChanged?.Invoke(person);
         }
 
         internal void Back()

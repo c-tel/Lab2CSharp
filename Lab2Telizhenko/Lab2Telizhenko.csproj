@@ -61,6 +61,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\FarBirthDateException.cs" />
+    <Compile Include="Models\FutureBirthDateException.cs" />
+    <Compile Include="Models\InvalidEmailException.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\WelcomeViewModel.cs" />
@@ -79,7 +83,6 @@
     <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\NavigationModel.cs" />
     <Compile Include="Models\Storage.cs" />
-    <Compile Include="Models\UserData.cs" />
     <Compile Include="Models\WelcomeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
