@@ -96,15 +96,7 @@ namespace Lab2Telizhenko.ViewModels
             {
                 Model.SubmitForm(DateOfBirth, Name, Surname, Email);
             }
-            catch (FarBirthDateException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            catch (FutureBirthDateException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            catch (InvalidEmailException e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }

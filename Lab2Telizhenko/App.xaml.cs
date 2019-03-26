@@ -18,7 +18,7 @@ namespace Lab2Telizhenko
             NavigationModel navigationModel = new NavigationModel(storage, contentWindow);
             NavigationManager.Instance.Initialize(navigationModel);
             contentWindow.Show();
-            navigationModel.Navigate(Modes.Welcome);
+            navigationModel.Navigate(Modes.Main);
         }
     }
 }

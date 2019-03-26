@@ -1,43 +1,33 @@
-﻿using System;
+﻿using Lab2Telizhenko.Tools;
+using Newtonsoft.Json;
+using System;
 
 namespace Lab2Telizhenko.Models
-{
-
-    public enum WestZodiac
-    {
-        Aries, Taurus, Gemini, Canser,
-        Leo, Virgo, Libra, Scorpio,
-        Sagittarius, Capricorn, Aquarius, Pisces
-    }
-
-    public enum ChineeseZodiac
-    {
-        Rat, Ox, Tiger, Rabbit,
-        Dragon, Snake, Horse, Sheep,
-        Monkey, Rooster, Dog, Pig
-    }
-
+{ 
     public class Person
     {
-        public string Name { get; }
-        public string Surname { get; }
-        public string Email { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        // can't set: assuming Email as primary key
+        public string Email { get; }
         public DateTime BirthDate { get; }
+        [JsonIgnore]
         public bool IsAdult { get; }
+        [JsonIgnore]
         public bool IsBirthday { get; }
-        public ChineeseZodiac SunSign { get; set; }
-        public WestZodiac WestZodiac { get; set; }
+        [JsonIgnore]
+        public ChineeseZodiac SunSign { get; }
+        [JsonIgnore]
+        public WestZodiac WestZodiac { get; }
 
+        [JsonConstructor]
         public Person(string name, string surname, string email, DateTime birthDate)
         {
             Name = name;
             Surname = surname;
             Email = email;
             BirthDate = birthDate;
-            var age = DateTime.Now.Year - birthDate.Year;
-            if (birthDate > DateTime.Now.AddYears(-age))
-                --age;
-            IsAdult = age >= 18;
+            IsAdult = birthDate.YearsAgo() >= 18;
             SunSign = CalculateChineese(birthDate);
             WestZodiac = CalculateWest(birthDate);
             IsBirthday = DateTime.Now.DayOfYear == birthDate.DayOfYear;
@@ -48,10 +38,7 @@ namespace Lab2Telizhenko.Models
             Name = name;
             Surname = surname;
             BirthDate = birthDate;
-            var age = DateTime.Now.Year - birthDate.Year;
-            if (birthDate > DateTime.Now.AddYears(-age))
-                --age;
-            IsAdult = age >= 18;
+            IsAdult = birthDate.YearsAgo() >= 18;
             SunSign = CalculateChineese(birthDate);
             WestZodiac = CalculateWest(birthDate);
         }

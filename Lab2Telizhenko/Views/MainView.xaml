@@ -5,46 +5,74 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
-            <Label Content="{Binding NameLabel}" HorizontalAlignment="Center"></Label>
+    <StackPanel>
+        <StackPanel Margin="0 30 0 0" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Label>Sort by: </Label>
+            <ComboBox ItemsSource="{Binding SortingParameters}" 
+                      SelectedItem="{Binding SelectedSortingParam, Mode=OneWayToSource}"
+                      Width="100px" 
+                      Margin="0 0 10 0"></ComboBox>
+            <Label>Filter: </Label>
+            <TextBox Text="{Binding Filter, Mode=OneWayToSource}"
+                     Width="100px"
+                     Margin="0 0 10 0"></TextBox>
+            <Button Command="{Binding ApplyParamsCommand}">Apply</Button>
+        </StackPanel>
+        <Button Command="{Binding RemoveCommand}"
+                Width="100px"
+                Margin="0 10 0 10">Remove Selected</Button>
+        <Button Command="{Binding AddCommand}"
+                Width="100px"
+                Margin="0 10 0 10">Add new </Button>
+        <DataGrid ItemsSource="{Binding SortedAndFilteredPeople}" 
+                  AutoGenerateColumns="False" 
+                  SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                  CanUserSortColumns="False"
+                  Margin="0 0 0 30">
+            <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname, Mode=OneWay}" />
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Date of Birth" Binding="{Binding BirthDate, StringFormat=d, Mode=OneWay}"/>
+                    <DataGridCheckBoxColumn Header="Adult" Binding="{Binding IsAdult, Mode=OneWay}" />
+                    <DataGridCheckBoxColumn Header="Has Birthday" Binding="{Binding IsBirthday, Mode=OneWay}" />
+                    <DataGridTextColumn Header="West Zodiac" Binding="{Binding WestZodiac, Mode=OneWay}" />
+                    <DataGridTextColumn Header="Sun Sign" Binding="{Binding SunSign, Mode=OneWay}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Visibility="{Binding PersonEditorVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <Label Content="Edit name" HorizontalAlignment="Center"></Label>
+                    <TextBox Height="25" Width="100" Text="{Binding SelectedPersName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="3">
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <Label Content="Edit surname" HorizontalAlignment="Center"></Label>
+                    <TextBox Height="25" Width="100" Text="{Binding SelectedPersSurname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="5">
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <Button Height="25" Width="100" Command="{Binding EditCommand}">Edit</Button>
+                </StackPanel>
+            </Grid>
+
         </Grid>
-        <Grid Grid.Row="2">
-            <Label Content="{Binding SurnameLabel}" HorizontalAlignment="Center" ></Label>
-        </Grid>
-        <Grid Grid.Row="3">
-            <Label Content="{Binding EmailLabel}" HorizontalAlignment="Center"></Label>
-        </Grid>
-        <Grid Grid.Row="4">
-            <Label Content="{Binding BirthDateLabel}" HorizontalAlignment="Center" ></Label>
-        </Grid>
-        <Grid Grid.Row="5">
-            <Label Content="{Binding WestZodiacLabel}" HorizontalAlignment="Center" ></Label>
-        </Grid>
-        <Grid Grid.Row="6">
-            <Label Content="{Binding ChineeseZodiacLabel}" HorizontalAlignment="Center" ></Label>
-        </Grid>
-        <Grid Grid.Row="7">
-            <Label Content="{Binding IsAdultLabel}" HorizontalAlignment="Center" ></Label>
-        </Grid>
-        <Grid Grid.Row="8">
-            <Label Content="Happy Birthday!" Visibility="{Binding CongratulationsVisibility}" HorizontalAlignment="Center" ></Label>
-        </Grid>
-        <Grid Grid.Row="9">
-            <Button Command="{Binding BackCommand}">Back</Button>
-        </Grid>
-    </Grid>
+    </StackPanel>
 </UserControl>

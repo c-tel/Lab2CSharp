@@ -1,5 +1,7 @@
 ﻿using Lab2Telizhenko.Managers;
+using Lab2Telizhenko.Tools;
 using System;
+using System.Linq;
 
 namespace Lab2Telizhenko.Models
 {
@@ -14,65 +16,36 @@ namespace Lab2Telizhenko.Models
 
         public void SubmitForm(DateTime dateOfBirth, string name, string surname, string email)
         {
-            var now = DateTime.Now;
-            var age = now.Year - dateOfBirth.Year;
-            if (dateOfBirth > now.AddYears(-age))
-                --age;
-            if (age < 0)
-                throw new FutureBirthDateException(dateOfBirth);
-            if (age > 135)
-                throw new FarBirthDateException(dateOfBirth);
+            ValidateData(dateOfBirth, email);
+            var person = new Person(name, surname, email, dateOfBirth);
+            _storage.CurrentPeople.Add(person);
+            _storage.SavePeopleChanges();
+            _storage.RefreshPeople();
+            NavigationManager.Instance.Navigate(Modes.Main);
+        }
+
+        private void ValidateEmail(string email)
+        {
             try
             {
-                new System.Net.Mail.MailAddress(email);
+                var _ = new System.Net.Mail.MailAddress(email);
             }
             catch
             {
                 throw new InvalidEmailException(email);
             }
-
-            var person = new Person(name, surname, email, dateOfBirth);
-
-            _storage.SetUserData(person);
-            NavigationManager.Instance.Navigate(Modes.Main);
+            if (_storage.CurrentPeople.Any(p => p.Email == email))
+                throw new DuplicateEmailException(email);
         }
 
-        private WestZodiac CalculateWest(DateTime date)
+        private void ValidateData(DateTime dateOfBirth, string email)
         {
-            if ((date.Month == 3 && date.Day >= 21) || (date.Month == 4 && date.Day <= 20))
-                return WestZodiac.Aries;
-            if ((date.Month == 4 && date.Day >= 21) || (date.Month == 5 && date.Day <= 20))
-                return WestZodiac.Taurus;
-            if ((date.Month == 5 && date.Day >= 21) || (date.Month == 6 && date.Day <= 21))
-                return WestZodiac.Gemini;
-            if ((date.Month == 6 && date.Day >= 22) || (date.Month == 7 && date.Day <= 22))
-                return WestZodiac.Canser;
-            if ((date.Month == 7 && date.Day >= 23) || (date.Month == 8 && date.Day <= 23))
-                return WestZodiac.Leo;
-            if ((date.Month == 8 && date.Day >= 24) || (date.Month == 9 && date.Day <= 23))
-                return WestZodiac.Virgo;
-            if ((date.Month == 9 && date.Day >= 24) || (date.Month == 10 && date.Day <= 22))
-                return WestZodiac.Libra;
-            if ((date.Month == 10 && date.Day >= 23) || (date.Month == 11 && date.Day <= 22))
-                return WestZodiac.Scorpio;
-            if ((date.Month == 11 && date.Day >= 23) || (date.Month == 12 && date.Day <= 21))
-                return WestZodiac.Sagittarius;
-            if ((date.Month == 12 && date.Day >= 22) || (date.Month == 1 && date.Day <= 20))
-                return WestZodiac.Capricorn;
-            if ((date.Month == 1 && date.Day >= 21) || (date.Month == 2 && date.Day <= 19))
-                return WestZodiac.Aquarius;
-            return WestZodiac.Pisces;
-        }
-
-        private ChineeseZodiac CalculateChineese(DateTime date)
-        {
-            var descriptor = (date.Year % 12) - 4;
-            if (descriptor < 0)
-            {
-                descriptor = 12 + descriptor;
-            }
-
-            return (ChineeseZodiac)descriptor;
+            var age = dateOfBirth.YearsAgo();
+            if (age < 0)
+                throw new FutureBirthDateException(dateOfBirth);
+            if (age > 135)
+                throw new FarBirthDateException(dateOfBirth);
+            ValidateEmail(email);
         }
     }
 }
