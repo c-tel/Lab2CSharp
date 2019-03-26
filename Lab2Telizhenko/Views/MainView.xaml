@@ -28,7 +28,8 @@
                   AutoGenerateColumns="False" 
                   SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
                   CanUserSortColumns="False"
-                  Margin="0 0 0 30">
+                  Margin="0 0 0 30"
+                  CanUserAddRows="False">
             <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}"/>
                     <DataGridTextColumn Header="Surname" Binding="{Binding Surname, Mode=OneWay}" />

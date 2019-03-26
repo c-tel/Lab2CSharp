@@ -9,18 +9,14 @@ namespace Lab2Telizhenko.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         // can't set: assuming Email as primary key
-        public string Email { get; }
-        public DateTime BirthDate { get; }
-        [JsonIgnore]
-        public bool IsAdult { get; }
-        [JsonIgnore]
-        public bool IsBirthday { get; }
-        [JsonIgnore]
-        public ChineeseZodiac SunSign { get; }
-        [JsonIgnore]
-        public WestZodiac WestZodiac { get; }
+        public string Email { get; set; }
+        public DateTime BirthDate { get; set; }
+        public bool IsAdult { get; set; }
+        public bool IsBirthday { get; set; }
+        public ChineeseZodiac SunSign { get; set; }
+        public WestZodiac WestZodiac { get; set; }
 
-        [JsonConstructor]
+        public Person() {  }
         public Person(string name, string surname, string email, DateTime birthDate)
         {
             Name = name;
